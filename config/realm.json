@@ -1,0 +1,219 @@
+{
+  "id": "hotels",
+  "realm": "hotels",
+  "sslRequired": "none",
+  "enabled": true,
+  "requiredCredentials": [
+    "password"
+  ],
+  "eventsEnabled": true,
+  "eventsExpiration": 900,
+  "adminEventsEnabled": true,
+  "adminEventsDetailsEnabled": true,
+  "browserFlow": "browser",
+  "directGrantFlow": "direct grant",
+  "clientAuthenticationFlow": "clients",
+  "attributes": {
+    "adminEventsExpiration": "900"
+  },
+  "clients": [
+    {
+      "id": "hotels-app",
+      "clientId": "hotels-app",
+      "secret": "secret",
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": true,
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "redirectUris": [
+        "*"
+      ],
+      "webOrigins": [],
+      "name": "hotels-app",
+      "bearerOnly": false,
+      "consentRequired": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": true,
+      "authorizationServicesEnabled": true,
+      "publicClient": false,
+      "frontchannelLogout": false,
+      "protocol": "openid-connect",
+      "attributes": {},
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": true,
+      "nodeReRegistrationTimeout": -1,
+      "protocolMappers": [
+        {
+          "id": "3eac903f-c16b-4a78-a7e8-eb8f4d402b71",
+          "name": "Client ID",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientId",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientId",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "8422cefe-7f42-4f3b-abad-5f06f7d4b748",
+          "name": "Client IP Address",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientAddress",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientAddress",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "988e47d6-2055-45eb-82d6-0b8b25c629fc",
+          "name": "Client Host",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientHost",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientHost",
+            "jsonType.label": "String"
+          }
+        }
+      ],
+      "defaultClientScopes": [
+        "web-origins",
+        "role_list",
+        "profile",
+        "roles",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "offline_access",
+        "microprofile-jwt"
+      ],
+      "authorizationSettings": {
+        "allowRemoteResourceManagement": true,
+        "policyEnforcementMode": "ENFORCING",
+        "resources": [
+          {
+            "name": "User Resource",
+            "ownerManagedAccess": false,
+            "attributes": {},
+            "_id": "df1b74a9-3f10-499d-a581-368de48e512b",
+            "uris": [
+              "/*"
+            ]
+          },
+          {
+            "name": "Administration Resource",
+            "ownerManagedAccess": false,
+            "attributes": {},
+            "_id": "7124e2f1-e6dc-44b4-87ab-24b010090b97",
+            "uris": [
+              "/api/admin/*"
+            ]
+          }
+        ],
+        "policies": [
+          {
+            "id": "b8710fa6-160e-4de0-adf3-398c7007a0af",
+            "name": "Any User Policy",
+            "description": "Any user granted with the user role can access something",
+            "type": "role",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "roles": "[{\"id\":\"user\",\"required\":false}]"
+            }
+          },
+          {
+            "id": "fcef30b2-68b2-4b78-9f3d-9162c6cdf5cb",
+            "name": "Only Administrators",
+            "description": "Only administrators can access",
+            "type": "role",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "roles": "[{\"id\":\"admin\",\"required\":false}]"
+            }
+          },
+          {
+            "id": "3479dd56-02e9-4222-94fe-6a13cd065195",
+            "name": "User Resource Permission",
+            "type": "resource",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"User Resource\"]",
+              "applyPolicies": "[\"Any User Policy\"]"
+            }
+          },
+          {
+            "id": "60188298-d55b-4066-b231-6a7c56ff7cc5",
+            "name": "Administration Resource Permission",
+            "type": "resource",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "resources": "[\"Administration Resource\"]",
+              "applyPolicies": "[\"Only Administrators\"]"
+            }
+          }
+        ],
+        "scopes": [],
+        "decisionStrategy": "UNANIMOUS"
+      }
+    }
+  ],
+  "users": [
+    {
+      "id": "admin",
+      "email": "admin@admin",
+      "username": "admin",
+      "firstName": "DevOps",
+      "lastName": "SRE",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "temporary": false,
+          "type": "password",
+          "value": "admin"
+        }
+      ],
+      "realmRoles": [
+        "user",
+        "admin"
+      ],
+      "clientRoles": {
+        "realm-management": [
+          "realm-admin"
+        ],
+        "account": [
+          "manage-account"
+        ]
+      }
+    }
+  ],
+  "roles": {
+    "realm": [
+      {
+        "name": "user",
+        "description": "User privileges"
+      },
+      {
+        "name": "admin",
+        "description": "Administrator privileges"
+      }
+    ]
+  }
+}

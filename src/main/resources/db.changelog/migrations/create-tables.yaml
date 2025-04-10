@@ -1,0 +1,79 @@
+dbms: mariadb
+databaseChangeLog:
+  - preConditions:
+      - runningAs:
+          username: myuser
+  - changeSet:
+      id: create-address-table
+      author: a.khilko
+      preConditions:
+        - onFail: WARN
+        - not:
+            - tableExists:
+                tableName: address
+      changes:
+        - createTable:
+            tableName: address
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: index
+                  type: varchar(10)
+              - column:
+                  name: city
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: street
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: building
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: create-hotel-table
+      author: a.khilko
+      preConditions:
+        - not:
+            - tableExists:
+                tableName: hotel
+        - onFail: WARN
+      changes:
+        - createTable:
+            tableName: hotel
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: address_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_address_id
+                    references: address(id)
+              - column:
+                  name: rating
+                  type: varchar(10)
+              - column:
+                  name: notes
+                  type: text

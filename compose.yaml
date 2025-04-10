@@ -1,0 +1,45 @@
+services:
+  quarkus-app:
+    build:
+      context: .
+      dockerfile: src/main/docker/Dockerfile.jvm
+    environment:
+      - 'QUARKUS_OIDC_AUTH_SERVER_URL=http://keycloak:8080/realms/hotels'
+    ports:
+      - '8080:8080'
+      - '8089:8089'
+      - '64088:64088'
+    depends_on:
+      - mariadb
+      - keycloak
+    networks:
+      - dev
+  mariadb:
+    image: mariadb:latest
+    environment:
+      - 'MYSQL_ROOT_PASSWORD=mypassword'
+      - 'MYSQL_DATABASE=mydb'
+      - 'MYSQL_USER=myuser'
+      - 'MYSQL_PASSWORD=mypassword'
+    ports:
+      - '3306:3306'
+    networks:
+      - dev
+  keycloak:
+    image: keycloak/keycloak:latest
+    environment:
+      - 'KC_BOOTSTRAP_ADMIN_USERNAME=admin'
+      - 'KC_BOOTSTRAP_ADMIN_PASSWORD=admin'
+      - 'KC_HOSTNAME_BACKCHANNEL_DYNAMIC=true'
+      - 'KC_HOSTNAME=http://localhost:8080'
+    ports:
+      - '8890:8080'
+    volumes:
+      - ./config/realm.json:/opt/keycloak/data/import/realm.json:ro
+    command: [ "start-dev", "--import-realm" ]
+    networks:
+      - dev
+
+networks:
+  dev:
+    driver: bridge

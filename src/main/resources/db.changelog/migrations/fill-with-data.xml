@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--    Address 1    -->
+    <changeSet id="insert-address-1" author="admin">
+        <insert tableName="address">
+            <column name="index" value="123123123"/>
+            <column name="city" value="Moscow"/>
+            <column name="street" value="Bolshaya"/>
+            <column name="building" value="10"/>
+        </insert>
+    </changeSet>
+
+    <!--    Address 2    -->
+    <changeSet id="insert-address-2" author="admin">
+        <insert tableName="address">
+            <column name="index" value="11111111"/>
+            <column name="city" value="Spb"/>
+            <column name="street" value="Zelenaya"/>
+            <column name="building" value="12"/>
+        </insert>
+    </changeSet>
+
+    <!--    Address 3    -->
+    <changeSet id="insert-address-3" author="admin">
+        <insert tableName="address">
+            <column name="index" value="0000001"/>
+            <column name="city" value="Omsk"/>
+            <column name="street" value="Lenina"/>
+            <column name="building" value="5A"/>
+        </insert>
+    </changeSet>
+
+    <!--    Hotel 1    -->
+    <changeSet id="insert-hotel-1" author="admin">
+        <insert tableName="hotel">
+            <column name="title" value="Hotel 1"/>
+            <column name="address_id" valueComputed="(SELECT address.id FROM address WHERE address.city = 'Moscow')"/>
+            <column name="rating" value="****"/>
+        </insert>
+    </changeSet>
+
+    <!--    Hotel 2    -->
+    <changeSet id="insert-hotel-2" author="admin">
+        <insert tableName="hotel">
+            <column name="title" value="Hotel 2"/>
+            <column name="address_id" valueComputed="(SELECT address.id FROM address WHERE address.city = 'Spb')"/>
+            <column name="rating" value="***"/>
+            <column name="notes" value="note"/>
+        </insert>
+    </changeSet>
+
+    <!--    Hotel 3    -->
+    <changeSet id="insert-hotel-3" author="admin">
+        <insert tableName="hotel">
+            <column name="title" value="Hotel 3"/>
+            <column name="address_id" valueComputed="(SELECT address.id FROM address WHERE address.city = 'Moscow')"/>
+            <column name="rating" value="**"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
